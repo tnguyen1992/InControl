@@ -21,6 +21,7 @@ Documents/MATLAB/Project/
 3) First run Pipeline 1 for signal processing, then run Pipeline 2 for GLM 
 
 The processing pipeline includes 
+- Conversion from Oxysoft to homer
 - Conversion to Optical Density
 - enPruneChannels
 - Wavelet-based motion correction
