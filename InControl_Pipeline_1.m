@@ -2,8 +2,8 @@
 %Preprocessing, artifact correction, quality check and bandpassfilter 
 %%%%%%%%%%%%%%%
 
-srcPath = '/Users/trinhnguyen/Documents/Projects /InControl/rawData/';                        % raw data location
-desPath = '/Users/trinhnguyen/Documents/Projects /InControl/procData/';                  % processed data location
+srcPath = '\\fs.univie.ac.at\homedirs\nguyenq22\Documents\Projekte\InControl\rawData\';                        % raw data location
+desPath = '\\fs.univie.ac.at\homedirs\nguyenq22\Documents\Projekte\InControl\procData\';                  % processed data location
 % gsePath = '\\fs.univie.ac.at\homedirs\nguyenq22\Documents\Projekte\InControl\procData\gen\';                    % path to CARE.SD
 
 
@@ -18,8 +18,7 @@ desPath = '/Users/trinhnguyen/Documents/Projects /InControl/procData/';         
 % createSDfile( cfg );
 
 %% Scan for all subjects
-if ~exist('numOfPart', 'var')                                               % estimate number of participants in raw data folder
-  sourceList    = dir([srcPath, '*.nirs']);
+  sourceList    = dir([srcPath, '*.oxy4']);
   sourceList    = struct2cell(sourceList);
   sourceList    = sourceList(1,:);
   numOfSources  = length(sourceList);
@@ -28,39 +27,21 @@ if ~exist('numOfPart', 'var')                                               % es
   for i=1:1:numOfSources
     numOfPart(i)  = sscanf(sourceList{i}, ['%d-2']);
   end
-end
+
 
 %% Conversion
-% for i = numOfPart
-%   srcFolder   = strcat(srcPath, sprintf([prefix, '_%02d/'], i));
-%   srcNirsSub1 = sprintf(['Subject1/', prefix, '_%02d.nirs'], i);
-%   srcNirsSub2 = sprintf(['Subject2/', prefix, '_%02d.nirs'], i);
-%   fileSub1    = strcat(srcFolder, srcNirsSub1);
-%   fileSub2    = strcat(srcFolder, srcNirsSub2);
-%   desFolder   = strcat(desPath, 'nirs/'); 
-%   
-%   if exist(fileSub1, 'file') && exist(fileSub1, 'file')
-%     fileDesSub1 = strcat(desFolder, sprintf([prefix, ...
-%                         '_d%02da_nirs_'], i), '.nirs');
-%     fprintf('<strong>Copying NIRS data for dyad %d, subject 1...</strong>\n', i);
-%     copyfile(fileSub1, fileDesSub1);
-%     fprintf('Data copied!\n\n');
-%     fileDesSub2 = strcat(desFolder, sprintf([prefix, ...
-%                         '_d%02db_nirs_'], i), '.nirs');
-%     fprintf('<strong>Copying NIRS data for dyad %d, subject 2...</strong>\n', i);
-%     copyfile(fileSub2, fileDesSub2);
-%     fprintf('Data copied!\n\n');
-%   else
-%     cfg = [];
-%     cfg.dyadNum     = i;
-%     cfg.prefix      = prefix;
-%     cfg.srcPath     = srcPath;
-%     cfg.desPath     = desFolder;
-%     cfg.SDfile      = strcat(gsePath, prefix, '.SD');
-%     
-%     nirs_conv( cfg );
-%   end
-% end
+% a window with missing dongle will pop up, but just ignore the window and
+% matlab will do the conversion anyway
+
+for i = numOfPart
+  srcFolder   = strcat(srcPath, sprintf(['%02d-2.oxy4'], i));
+  srcNirs = sprintf(['%02d-2.nirs'], i);
+  fileSub1    = strcat(srcFolder, srcNirs);
+  desFolder   = strcat(srcPath, sprintf(['%02d-2'], i)); 
+  
+[nirs_data, events] = oxysoft2matlab(srcFolder, 'homer', desFolder, [], []);
+  
+end
 
 %% preprocessing
 for i = numOfPart
