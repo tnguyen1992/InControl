@@ -1,4 +1,11 @@
 # InControl Toolbox for Tilburg project
+0) Install Oxysoft software and register Oxysoft as DCOM
+ - after the first installation, you need to restart the PC
+ - then open the command window
+ - type in cd "path of your oxysoft folder"
+ - enter
+ - type in Oxysoft/register
+ - close the window, you're done
 
 1) Add toolbox and script folder(s) to path (homer2)
 
